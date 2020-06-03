@@ -5,10 +5,25 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var cors = require('cors');
+var bodyParser = require('body-parser');
+
+var mongoose = require('mongoose');
+
+// 创建数据库连接
+const connect = mongoose.connect('mongodb://127.0.0.1:27017/expressDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}, function (res) {
+  //console.log(res)
+}).then(res => {
+  //console.log(res.status)
+})
+//console.log(connect)
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
+var heroRouter = require('./routes/hero');
 
 var app = express();
 
@@ -17,7 +32,11 @@ app.use(cors({
   origin: ['http://localhost:8080'],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}))
+}));
+
+// 设置body解析1
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,8 +49,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/login', loginRouter);
+app.use('/api', usersRouter);
+app.use('/api', loginRouter);
+app.use('/api', heroRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

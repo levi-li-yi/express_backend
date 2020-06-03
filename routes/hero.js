@@ -6,8 +6,8 @@ const Hero = require('../models/hero');
 
 // 查询所有hero信息路由
 router.get('/hero', (req, res) => {
-    // console.log('id: ',req);
-    Hero.find({})
+  res.send({msg: 'success'})
+    /*Hero.find({})
     .then(heros => {
         console.log(heros)
         res.json(heros);
@@ -15,7 +15,7 @@ router.get('/hero', (req, res) => {
     .catch(err => {
         console.log(2);
         res.json(err)
-    })
+    })*/
 })
 
 /* router.get('/', function(req,res,next){
